@@ -4,14 +4,14 @@ import numpy as np
 import random
 import time
 # General Parameters
-# -- DO NOT MODIFY --
+
 ENV_NAME = 'CartPole-v0'
 EPISODE = 200000  # Episode limitation
 STEP = 200  # Step limitation in an episode
 TEST = 10  # The number of tests to run every TEST_FREQUENCY episodes
 TEST_FREQUENCY = 100  # Num episodes to run before visualizing test accuracy
 
-# TODO: HyperParameters
+
 GAMMA = 0.8 # discount factor
 INITIAL_EPSILON = 0.6 # starting value of epsilon
 FINAL_EPSILON = 0.01 # final value of epsilon
@@ -23,20 +23,18 @@ MEMORY_SIZE = 1000
 MEMORY_BATCH_SIZE = 128
 
 # Create environment
-# -- DO NOT MODIFY --
 env = gym.make(ENV_NAME)
 epsilon = INITIAL_EPSILON
 STATE_DIM = env.observation_space.shape[0]
 ACTION_DIM = env.action_space.n
 
 # Placeholders
-# -- DO NOT MODIFY --
 state_in = tf.placeholder("float", [None, STATE_DIM])
 action_in = tf.placeholder("float", [None, ACTION_DIM])
 target_in = tf.placeholder("float", [None])
 
 
-# TODO: Define Network Graph
+# Define Network Graph
 def dqn(state_in, STATE_DIM, HIDDEN_DIM, ACTION_DIM):
     W1 = tf.get_variable(name="W1", shape=[STATE_DIM, HIDDEN_DIM])
     b1 = tf.get_variable(name="b1", shape=[1, HIDDEN_DIM], initializer=tf.constant_initializer(0.1))
@@ -53,11 +51,11 @@ def dqn(state_in, STATE_DIM, HIDDEN_DIM, ACTION_DIM):
     return output_logits
 
 
-# TODO: Network outputs
+# Network outputs
 q_values = dqn(state_in, STATE_DIM, HIDDEN_DIM, ACTION_DIM)
 q_action = tf.reduce_sum(tf.multiply(action_in, q_values), axis=1)
 
-# TODO: Loss/Optimizer Definition
+# Loss/Optimizer Definition
 loss = tf.reduce_mean(tf.squared_difference(target_in,q_action))
 optimizer = tf.train.AdamOptimizer(0.01, name="AdamOptimizer").minimize(loss=loss)
 
@@ -92,7 +90,7 @@ def update(q_values, state_in, testbatch):
     return np.array(target_q), np.array(action_batch), np.array(state_batch)
 
 
-# -- DO NOT MODIFY ---
+
 def explore(state, epsilon):
     """
     Exploration function: given a state and an epsilon value,
@@ -151,7 +149,7 @@ for episode in range(EPISODE):
                 flag = False
             break
     # Test and view sample runs - can disable render to save time
-    # -- DO NOT MODIFY --
+    
     if (episode % TEST_FREQUENCY == 0 and episode != 0):
         total_reward = 0
         for i in range(TEST):
